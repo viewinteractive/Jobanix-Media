@@ -99,7 +99,8 @@
         autoCenter: true,
         elevation: 50,
         gradients: true,
-        duration: 1000
+        duration: 1000,
+        display: 'single' // 👈 Shows one page at a time
       });
 
       $("#next").click(function () {
@@ -110,7 +111,7 @@
         $("#flipbook").turn("previous");
       });
 
-      // Swipe support
+      // Swipe support for mobile
       let startX = 0;
       document.getElementById("flipbook").addEventListener("touchstart", (e) => {
         startX = e.touches[0].clientX;
