@@ -3,41 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jobanix Media – Pricing Carousel</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
       padding: 20px;
       background-color: #fdf6ec;
+      text-align: center;
     }
 
     h2 {
-      text-align: center;
       color: #5C2D8B;
     }
 
-    .carousel {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      gap: 20px;
-      padding: 20px 0;
+    .carousel-container {
+      position: relative;
+      max-width: 600px;
+      margin: auto;
     }
 
-    .carousel img {
-      scroll-snap-align: center;
+    .carousel-slide {
+      display: none;
       width: 100%;
-      max-width: 600px;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      flex-shrink: 0;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.3);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      border-radius: 50%;
+    }
+
+    .nav-button:hover {
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    #prevBtn {
+      left: -40px;
+    }
+
+    #nextBtn {
+      right: -40px;
     }
 
     @media (max-width: 768px) {
-      .carousel img {
-        max-width: 90%;
+      .nav-button {
+        font-size: 14px;
+        padding: 8px;
+        left: -30px;
+        right: -30px;
       }
     }
   </style>
@@ -45,14 +71,35 @@
 <body>
   <h2>Jobanix Media – Pricing Sheet</h2>
 
-  <div class="carousel">
-    <img src="images/price sheet-01.png" />
-    <img src="images/price sheet-02.png" />
-    <img src="images/price sheet-03.png" />
-    <img src="images/price sheet-04.png" />
-    <img src="images/price sheet-05.png" />
-    <img src="images/price sheet-06.png" />
-    <img src="images/price sheet-07.png" />
+  <div class="carousel-container">
+    <button class="nav-button" id="prevBtn">&#10094;</button>
+
+    <img src="images/price sheet-01.png" class="carousel-slide active" alt="Price Sheet 01" />
+    <img src="images/price sheet-02.png" class="carousel-slide" alt="Price Sheet 02" />
+    <img src="images/price sheet-03.png" class="carousel-slide" alt="Price Sheet 03" />
+    <img src="images/price sheet-04.png" class="carousel-slide" alt="Price Sheet 04" />
+    <img src="images/price sheet-05.png" class="carousel-slide" alt="Price Sheet 05" />
+    <img src="images/price sheet-06.png" class="carousel-slide" alt="Price Sheet 06" />
+    <img src="images/price sheet-07.png" class="carousel-slide" alt="Price Sheet 07" />
+
+    <button class="nav-button" id="nextBtn">&#10095;</button>
   </div>
+
+  <script>
+    const slides = document.querySelectorAll('.carousel-slide');
+    let currentSlide = 0;
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+    });
+  </script>
 </body>
 </html>
