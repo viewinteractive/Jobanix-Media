@@ -15,8 +15,8 @@
     }
 
     #flipbook {
-      width: 90vw;
-      height: 90vh;
+      width: 600px;
+      height: 800px;
     }
 
     #flipbook .page {
@@ -34,7 +34,6 @@
       object-fit: contain;
     }
 
-    /* Navigation arrows */
     #prev, #next {
       position: absolute;
       top: 50%;
@@ -62,6 +61,11 @@
     }
 
     @media (max-width: 768px) {
+      #flipbook {
+        width: 90vw;
+        height: 90vh;
+      }
+
       #prev, #next {
         font-size: 16px;
         padding: 10px;
@@ -69,17 +73,14 @@
     }
   </style>
 
-  <!-- Turn.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
-  <!-- jQuery (required for Turn.js) -->
+  <!-- jQuery and Turn.js -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
 </head>
 <body>
-  <!-- Navigation arrows -->
   <button id="prev">&#10094;</button>
   <button id="next">&#10095;</button>
 
-  <!-- Flipbook container -->
   <div id="flipbook">
     <div class="page"><img src="images/price sheet-01.png" alt="Page 1" /></div>
     <div class="page"><img src="images/price sheet-02.png" alt="Page 2" /></div>
@@ -93,26 +94,24 @@
   <script>
     $(document).ready(function () {
       $("#flipbook").turn({
-        width: "90vw",
-        height: "90vh",
+        width: $("#flipbook").width(),
+        height: $("#flipbook").height(),
         autoCenter: true,
         elevation: 50,
         gradients: true,
         duration: 1000
       });
 
-      // Arrow navigation
-      document.getElementById("next").addEventListener("click", () => {
+      $("#next").click(function () {
         $("#flipbook").turn("next");
       });
 
-      document.getElementById("prev").addEventListener("click", () => {
+      $("#prev").click(function () {
         $("#flipbook").turn("previous");
       });
 
-      // Swipe support for mobile
+      // Swipe support
       let startX = 0;
-
       document.getElementById("flipbook").addEventListener("touchstart", (e) => {
         startX = e.touches[0].clientX;
       });
