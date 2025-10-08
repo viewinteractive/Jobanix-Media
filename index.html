@@ -4,149 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      padding: 0;
+      background-color: #fdf6ec;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
       overflow: hidden;
+    }
+
+    #flipbook {
+      width: 90vw;
+      height: 90vh;
+    }
+
+    #flipbook .page {
+      width: 100%;
+      height: 100%;
       background-color: #fdf6ec;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      max-width: 600px;
-      height: 100vh;
-      perspective: 1200px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .carousel-slide {
-      position: absolute;
-      width: 100%;
-      max-width: 90vw;
-      max-height: 90vh;
+    #flipbook .page img {
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-      opacity: 0;
-      transform: rotateY(90deg);
-      transition: transform 0.8s ease, opacity 0.8s ease;
-    }
-
-    .active {
-      opacity: 1;
-      transform: rotateY(0deg);
-      z-index: 2;
-    }
-
-    .nav-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0,0,0,0.3);
-      color: white;
-      border: none;
-      padding: 12px;
-      cursor: pointer;
-      font-size: 20px;
-      border-radius: 50%;
-      z-index: 10;
-    }
-
-    .nav-button:hover {
-      background-color: rgba(0,0,0,0.6);
-    }
-
-    #prevBtn {
-      left: -60px;
-    }
-
-    #nextBtn {
-      right: -60px;
-    }
-
-    @media (max-width: 768px) {
-      #prevBtn {
-        left: 10px;
-      }
-
-      #nextBtn {
-        right: 10px;
-      }
-
-      .nav-button {
-        font-size: 16px;
-        padding: 10px;
-      }
     }
   </style>
+
+  <!-- Turn.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
 </head>
 <body>
-  <div class="carousel-container">
-    <button class="nav-button" id="prevBtn">&#10094;</button>
-
-    <img src="images/price sheet-01.png" class="carousel-slide active" alt="Price Sheet 01" />
-    <img src="images/price sheet-02.png" class="carousel-slide" alt="Price Sheet 02" />
-    <img src="images/price sheet-03.png" class="carousel-slide" alt="Price Sheet 03" />
-    <img src="images/price sheet-04.png" class="carousel-slide" alt="Price Sheet 04" />
-    <img src="images/price sheet-05.png" class="carousel-slide" alt="Price Sheet 05" />
-    <img src="images/price sheet-06.png" class="carousel-slide" alt="Price Sheet 06" />
-    <img src="images/price sheet-07.png" class="carousel-slide" alt="Price Sheet 07" />
-
-    <button class="nav-button" id="nextBtn">&#10095;</button>
+  <div id="flipbook">
+    <div class="page"><img src="images/price sheet-01.png" alt="Page 1" /></div>
+    <div class="page"><img src="images/price sheet-02.png" alt="Page 2" /></div>
+    <div class="page"><img src="images/price sheet-03.png" alt="Page 3" /></div>
+    <div class="page"><img src="images/price sheet-04.png" alt="Page 4" /></div>
+    <div class="page"><img src="images/price sheet-05.png" alt="Page 5" /></div>
+    <div class="page"><img src="images/price sheet-06.png" alt="Page 6" /></div>
+    <div class="page"><img src="images/price sheet-07.png" alt="Page 7" /></div>
   </div>
 
   <script>
-    const slides = document.querySelectorAll('.carousel-slide');
-    let currentSlide = 0;
-
-    function showSlide(index) {
-      slides.forEach(slide => slide.classList.remove('active'));
-      slides[index].classList.add('active');
-    }
-
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      currentSlide = (currentSlide + 1) % slides.length;
-      showSlide(currentSlide);
-    });
-
-    document.getElementById('prevBtn').addEventListener('click', () => {
-      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-      showSlide(currentSlide);
-    });
-
-    // Swipe support for mobile
-    let startX = 0;
-
-    document.querySelector('.carousel-container').addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-    });
-
-    document.querySelector('.carousel-container').addEventListener('touchend', (e) => {
-      let endX = e.changedTouches[0].clientX;
-      let diff = startX - endX;
-
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          currentSlide = (currentSlide + 1) % slides.length;
-        } else {
-          currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        }
-        showSlide(currentSlide);
-      }
+    document.addEventListener("DOMContentLoaded", function () {
+      $("#flipbook").turn({
+        width: "90vw",
+        height: "90vh",
+        autoCenter: true,
+        elevation: 50,
+        gradients: true,
+        duration: 1000
+      });
     });
   </script>
+
+  <!-- jQuery (required for Turn.js) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
