@@ -33,12 +33,53 @@
       max-height: 100%;
       object-fit: contain;
     }
+
+    /* Navigation arrows */
+    #prev, #next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.3);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    #prev:hover, #next:hover {
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    #prev {
+      left: 20px;
+    }
+
+    #next {
+      right: 20px;
+    }
+
+    @media (max-width: 768px) {
+      #prev, #next {
+        font-size: 16px;
+        padding: 10px;
+      }
+    }
   </style>
 
   <!-- Turn.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
+  <!-- jQuery (required for Turn.js) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+  <!-- Navigation arrows -->
+  <button id="prev">&#10094;</button>
+  <button id="next">&#10095;</button>
+
+  <!-- Flipbook container -->
   <div id="flipbook">
     <div class="page"><img src="images/price sheet-01.png" alt="Page 1" /></div>
     <div class="page"><img src="images/price sheet-02.png" alt="Page 2" /></div>
@@ -50,7 +91,7 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function () {
       $("#flipbook").turn({
         width: "90vw",
         height: "90vh",
@@ -59,10 +100,36 @@
         gradients: true,
         duration: 1000
       });
+
+      // Arrow navigation
+      document.getElementById("next").addEventListener("click", () => {
+        $("#flipbook").turn("next");
+      });
+
+      document.getElementById("prev").addEventListener("click", () => {
+        $("#flipbook").turn("previous");
+      });
+
+      // Swipe support for mobile
+      let startX = 0;
+
+      document.getElementById("flipbook").addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+      });
+
+      document.getElementById("flipbook").addEventListener("touchend", (e) => {
+        let endX = e.changedTouches[0].clientX;
+        let diff = startX - endX;
+
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) {
+            $("#flipbook").turn("next");
+          } else {
+            $("#flipbook").turn("previous");
+          }
+        }
+      });
     });
   </script>
-
-  <!-- jQuery (required for Turn.js) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
