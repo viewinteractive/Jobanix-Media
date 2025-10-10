@@ -93,43 +93,52 @@
 
   <script>
     $(document).ready(function () {
-      $("#flipbook").turn({
-        width: $("#flipbook").width(),
-        height: $("#flipbook").height(),
-        autoCenter: true,
-        elevation: 50,
-        gradients: true,
-        duration: 1000,
-        display: 'single' // 👈 Shows one page at a time
-      });
+  $("#flipbook").turn({
+    width: $("#flipbook").width(),
+    height: $("#flipbook").height(),
+    autoCenter: true,
+    elevation: 50,
+    gradients: true,
+    duration: 1000,
+    display: 'single',
+    when: {
+      turned: function () {
+        updateArrows();
+      }
+    }
+  });
 
-      $("#next").click(function () {
+  $("#next").click(function () {
+    $("#flipbook").turn("next");
+    updateArrows();
+  });
+
+  $("#prev").click(function () {
+    $("#flipbook").turn("previous");
+    updateArrows();
+  });
+
+  let startX = 0;
+  document.getElementById("flipbook").addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  document.getElementById("flipbook").addEventListener("touchend", (e) => {
+    let endX = e.changedTouches[0].clientX;
+    let diff = startX - endX;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
         $("#flipbook").turn("next");
-      });
-
-      $("#prev").click(function () {
+      } else {
         $("#flipbook").turn("previous");
-      });
+      }
+      updateArrows();
+    }
+  });
 
-      // Swipe support for mobile
-      let startX = 0;
-      document.getElementById("flipbook").addEventListener("touchstart", (e) => {
-        startX = e.touches[0].clientX;
-      });
-
-      document.getElementById("flipbook").addEventListener("touchend", (e) => {
-        let endX = e.changedTouches[0].clientX;
-        let diff = startX - endX;
-
-        if (Math.abs(diff) > 50) {
-          if (diff > 0) {
-            $("#flipbook").turn("next");
-          } else {
-            $("#flipbook").turn("previous");
-          }
-        }
-      });
-    });
+  updateArrows(); // Initial check
+});
   </script>
 </body>
 </html>
